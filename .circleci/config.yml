@@ -1,0 +1,21 @@
+version: 2.1
+workflows:
+  build-and-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+jobs:
+  build:
+    docker:
+      - image: maven:3-alpine
+    steps:
+      - run:
+          command: sh 'mvn -B -DskipTests clean package'
+  test:
+    docker:
+      - image: maven:3-alpine
+    steps:
+      - run:
+          command: sh 'mvn test'
